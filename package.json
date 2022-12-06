@@ -1,0 +1,15 @@
+{
+  "name": "final-expressjs-webdata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mssql": "^9.0.1"
+  }
+}
