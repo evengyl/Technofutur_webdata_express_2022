@@ -1,61 +1,51 @@
-const database = require('../context/database')
-const fakeDb = require('../context/fakeDb')
+const UserModel = require("../models/users.model")
 
-const users = fakeDb.users
 
 const userController = {
 
     getOne : (req, res) => {
-        database.getOne(req.params.id, (user) => {
-            console.log(user);
-            if (user) {
-                res.status(200).json(user)
-            }
-            else
-            {
-                res.sendStatus(400)
-            }
+        UserModel.getOne(req.params.id).then((datas) => {
+            res.status(200).json(datas)
         })
-        
     },
 
     getAll : (req, res) => {
-        database.getAll((data) => {
-            res.status(200).json(data)
+        UserModel.getAll().then((datas) => {
+            res.status(200).json(datas)
         })
     },
 
     create : (req, res) => {
         const user = req.body
-        if (user.nom && user.prenom && user.email && user.password) {
-
-            database.create(user.prenom, user.nom, user.email, user.password, (result) => {
-                if (result) {
-                    res.sendStatus(200)
-                }
-                else{
-                    res.sendStatus(400)
-                }
-            })  
+        if (user.nom && user.prenom && user.email && user.password)
+        {
+            UserModel.create(user.prenom, user.nom, user.email, user.password)
+            .then((result) => {
+                res.status(201).json({ id : result.insertId})
+            })
+            .catch((error) => {
+                res.status(500).json({ message : error.sqlMessage})
+            })
         }
-        else{
-            res.sendStatus(400)
-        }
-        
     },
 
     update : (req, res) => {
         const user = req.body
+
         if (user.id && user.nom && user.prenom && user.email && user.password){
 
-            database.update(user.id, user.prenom, user.nom, user.email, user.password, (result) => {
-                if (result) {
-                    res.sendStatus(200)
+            UserModel.getOne(req.body.id).then((oldUser) => {
+                if(oldUser[0].id)
+                {
+                    UserModel.update(user.id, user.prenom, user.nom, user.email, user.password)
+                    .then((datas) => {
+                        res.status(200).json({ message : "user updated"})
+                    })
                 }
                 else{
-                    res.sendStatus(400)
+                    res.status(404).json({ message : "user not found"})
                 }
-            })   
+            })
         }
         else
         {
@@ -64,36 +54,23 @@ const userController = {
     },
     
     delete : (req, res) => {
-        database.delete(req.params.id, (result) => {
-            res.sendStatus(result ? 200 : 400)
-        })
-        
-    },
+        const id = req.body.id
 
-    changePassword : (req, res) => {
-        const body = req.body
-        if (body.id && body.password && body.confirmPassword) {
-            const user = users.find(u => u.id == body.id)
-            if (user) {
-                if (body.password === body.confirmPassword) {
-                    user.password = body.password
-                    res.status(200).json(users)
-                }
-                else{
-                    res.sendStatus(400)
-                }
+        UserModel.getOne(id).then((oldUser) => {
+            if(oldUser[0].id)
+            {
+                UserModel.delete(id)
+                .then((datas) => {
+                    res.status(200).json({ message : "user deleted"})
+                })
             }
             else{
-                res.sendStatus(400)
+                res.status(404).json({ message : "user not found"})
             }
-        }
-        else{
-            res.sendStatus(400)
-        }
-    }
+        })
+    },
 
 }
 
-compteur = users.length + 1
 
 module.exports = userController
