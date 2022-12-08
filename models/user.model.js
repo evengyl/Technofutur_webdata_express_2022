@@ -21,7 +21,7 @@ const UserModel = {
         })
     },
 
-    update : (id, firstname, lastname, email, password, next) => {
+    update : (id, firstname, lastname, email, password) => {
 
         return dbConnect.then((conn) => {
             return conn.query('UPDATE users SET prenom = ?, nom = ?, email = ?, password = ? WHERE id = ?', [firstname, lastname, email, password, id])
