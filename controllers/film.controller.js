@@ -3,9 +3,9 @@ const filmModel = require("../models/film.model")
 
 const filmController = {
 
-    getAll : (req, res, next) => {
+    getAll : (req, res) => {
 
-        filmModel.getAll()
+        filmModel.getAll(res.locals.orderBy)
         .then((allFilms) => {
             res.status(200).json(allFilms)
         })
@@ -15,7 +15,7 @@ const filmController = {
     },
 
 
-    getOne : (req, res, next) => {
+    getOne : (req, res) => {
 
         let { id } = req.params
 
@@ -37,7 +37,7 @@ const filmController = {
     },
 
 
-    create : (req, res, next) => {
+    create : (req, res) => {
 
         let { titre, dureeMin, descp } = req.body
 
@@ -51,7 +51,7 @@ const filmController = {
     },
 
 
-    update : (req, res, next) => {
+    update : (req, res) => {
 
         let { titre, dureeMin, descp } = req.body
         let id = req.params.id
@@ -84,7 +84,7 @@ const filmController = {
     },
 
     
-    delete : (req, res, next) => {
+    delete : (req, res) => {
 
         let { id } = req.params
 

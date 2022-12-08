@@ -6,7 +6,7 @@ const userController = {
 
     getAll : (req, res) => {
 
-        UserModel.getAll().then((datas) => {
+        UserModel.getAll(res.locals.orderBy).then((datas) => {
             res.status(200).json(datas)
         })
     },

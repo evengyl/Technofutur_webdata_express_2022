@@ -2,9 +2,9 @@ const dbConnect = require("./db").get()
 
 const UserModel = {
 
-    getAll : () => {
+    getAll : (orderBy) => {
         return dbConnect.then((conn) => {
-            return conn.query('SELECT * FROM users')
+            return conn.query(`SELECT * FROM users order by id ${orderBy}`)
         })
     },
 

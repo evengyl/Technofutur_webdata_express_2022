@@ -1,15 +1,12 @@
 const express = require('express')
-const filmController = require('../controllers/film.controller')
+const privateDataController = require('../controllers/privateData.controller')
 
-const filmRouter = express.Router()
+const privateDataRouter = express.Router()
 
-filmRouter.get('/', filmController.getAll)                      //GET : localhost:3000/api/v1/films
-filmRouter.get('/:id([0-9]+)', filmController.getOne)           //GET : localhost:3000/api/v1/films/:id
-filmRouter.post('/', filmController.create)                     //POST : localhost:3000/api/v1/films + body du film a créer 
-filmRouter.put('/:id([0-9]+)', filmController.update)           //PUT : localhost:3000/api/v1/films/:id + body du film a modifier
-filmRouter.delete('/:id([0-9]+)', filmController.delete)        //DELETE : localhost:3000/api/v1/films/:id 
+privateDataRouter.get('/', privateDataController.getAll)                      //GET : localhost:3000/api/v1/privateDatas
+privateDataRouter.get('/:id([0-9]+)', privateDataController.getOne)           //GET : localhost:3000/api/v1/privateDatas/:id
 
-module.exports = filmRouter
+module.exports = privateDataRouter
 
 /*
 application des filtre !

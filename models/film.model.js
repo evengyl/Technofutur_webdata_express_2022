@@ -3,9 +3,9 @@ const dbConnect = require("./db").get()
 
 const filmModel = {
 
-    getAll : () => {
+    getAll : (orderBy) => {
         return dbConnect.then((conn) => {
-            return conn.query('SELECT * FROM films')
+            return conn.query(`SELECT * FROM films order by id ${orderBy}`)
         })
     },
 
