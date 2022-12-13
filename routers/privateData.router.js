@@ -1,12 +1,12 @@
 const express = require('express')
 const privateDataController = require('../controllers/privateData.controller')
 
-const privateDataRouter = express.Router()
+const router = express.Router()
 
-privateDataRouter.get('/', privateDataController.getAll)                      //GET : localhost:3000/api/v1/privateDatas
-privateDataRouter.get('/:id([0-9]+)', privateDataController.getOne)           //GET : localhost:3000/api/v1/privateDatas/:id
+router.get('/', privateDataController.getAll)                      //GET : localhost:3000/api/v1/privateDatas
+router.get('/:id([0-9]+)', privateDataController.getOne)           //GET : localhost:3000/api/v1/privateDatas/:id
 
-module.exports = privateDataRouter
+module.exports = router
 
 /*
 application des filtre !
