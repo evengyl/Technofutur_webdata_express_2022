@@ -1,0 +1,127 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "My Web APIRest in ExpressJs",
+      "description": "My User Project Application API"
+    },
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+
+    "securityDefinitions": {
+
+        "Bearer": {
+
+            "type": "apiKey",
+            "name": "Authorization",
+            "in" : "header",
+            "description": ">- Enter the token with the `Bearer: ` prefix, e.g. Bearer abcde12345."
+        }
+    },
+    
+    "paths": {
+        "/api/v1/users": {
+            "get": {
+                "tags": ["Users"],
+                "summary": "Get all users",
+                "security" : {
+                    "Bearer": []
+                },
+                "responses": {
+                    "200" : {
+                        "description": "OK",
+                        "schema": { "$ref": "#/definitions/Users" }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "authorization",
+                        "in": "headers",
+                        "required": true,
+                        "description": "JWT",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth" : {
+            "post" : {
+                "tags": ["Auth"],
+                "summary": "Authentification",
+                "responses": {
+                    "201" : {
+                        "description": "Created",
+                        "schema": { "$ref": "#/definitions/AuthCreated" }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "New user",
+                        "in": "body",
+                        "required": true,
+                        "description": "New user",
+                        "schema" : { "$ref" : "#/definitions/NewUser"}
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/{email}" : {
+            "get" : {
+                "tags": ["Auth"],
+                "summary": "Authentification",
+                "responses": {
+                    "200" : {
+                        "description": "OK",
+                        "schema": { "$ref": "#/definitions/AuthentificationOk" }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "required": true,
+                        "description": "Email to authenticate users for get access token",
+                        "schema" : { "$ref" : "#/definitions/Email"},
+                        "default" : "string"
+                    }
+                ]
+            }
+        }
+    },
+
+
+    "definitions": {
+        "Users": {
+            "properties": {
+                "id": { "type": "integer" },
+                "nom": { "type": "string" },
+                "prenom": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" }
+            }
+        },
+        "AuthCreated" : {
+            "properties" : {
+                "id" : { "type" : "integer"}
+            }
+        },
+        "Email" : {
+            "properties" : {
+                "email" : { "type" : "string"}
+            }
+        },
+        "AuthentificationOk" : {
+            "properties" : {
+                "jwt" : { "type" : "string"}
+            }
+        },
+        "NewUser" : {
+            "properties": {
+                "nom": { "type": "string" },
+                "prenom": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" }
+            }
+        }
+    }
+}

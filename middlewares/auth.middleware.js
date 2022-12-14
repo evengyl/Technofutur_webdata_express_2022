@@ -1,14 +1,23 @@
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
+
 module.exports = (req, res, next) => {
 
-    let { login, password } = req.body
-
-    if(login && password)
+    console.log(req)
+    if(req.headers["authorization"])    
     {
-        if(login == "root" && password == "test1234")
+        let token = req.headers["authorization"].replace(/^Bearer\s+/, "");
+        let res = jwt.verify(token, process.env.JWT_KEY)
+
+        if(res.id){
             next()
-        else
-            res.status(401).json({ message : "vous n'êtes pas admin !"})
+        }
+        else{
+            res.status(401).json({message : "token invalid"})
+        }
     }
-    else
-        res.status(401).json({ message : "données admin manquantes"})
+    else{
+        res.status(401).json({message : "unauthorized request"})
+    }
+        
 }

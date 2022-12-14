@@ -29,26 +29,6 @@ const userController = {
     },
 
 
-    create : (req, res) => {
-
-        const user = req.body
-
-        if (user.nom && user.prenom && user.email && user.password)
-        {
-            UserModel.create(user.prenom, user.nom, user.email, user.password)
-            .then((result) => {
-                res.status(201).json({ id : result.insertId})
-            })
-            .catch((error) => {
-                res.status(500).json({ message : error.sqlMessage})
-            })
-        }
-        else
-        {
-            res.status(500).json({ message : "Le corp de la requète est mal rempli"})
-        }
-    },
-
 
     update : (req, res) => {
 

@@ -12,7 +12,6 @@ const router = express.Router()
 
 router.get('/', auth, orderBy, userController.getAll)                  //GET : localhost:3000/api/v1/users
 router.get('/:id([0-9]+)', userController.getOne)       //GET : localhost:3000/api/v1/users/:id
-router.post('/', userController.create)                 //POST : localhost:3000/api/v1/users/ + body de user à créer
 router.put('/:id([0-9]+)', userController.update)       //PUT : localhost:3000/api/v1/users/:id + body de user à modifier
 router.delete('/:id([0-9]+)', auth, userController.delete)    //DELETE : localhost:3000/api/v1/users/:id
 

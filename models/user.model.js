@@ -14,12 +14,7 @@ const UserModel = {
         })
     },
 
-    create : (firstname, lastname, email, password) => {
-
-        return dbConnect.then((conn) => {
-            return conn.query("INSERT INTO users (prenom, nom, email, password) VALUES (?, ?, ?, ?)", [firstname, lastname, email, password])
-        })
-    },
+    
 
     update : (id, firstname, lastname, email, password) => {
 

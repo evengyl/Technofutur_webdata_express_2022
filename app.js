@@ -1,77 +1,42 @@
 require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
+
+//Database
 const dbConnection = require("./models/db")
 dbConnection.connect()
 
+
+//Port server
 const port = process.env.PORT || process.env.PORT_LOCAL
 
+
+//init app express
 const app = express()
 
 
+// use body parser for translate body request in json + form html
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended : true}))
 
 
+//routing
 const router = require('./routers/router')
 app.use(router)
 
-/* exmple callback style middleware */
-/*
-sayHello =(req, res, next) => {
-    console.log(req)
-    console.log(res)
-    console.log("hello")
-}*/
-
-/* code source on y a pas accès */
-/*
-middleWare = (login, pass, callback) => {
-
-    if(login == "root" && pass == "test1234"){
-        let req = {}
-        let res = {}
-        let next = () => {}
-
-        setTimeout(() => {
-            callback(req, res, next)
-        }, 2000);
-    }
-}
-
-middleWare("root", "test1234", sayHello)
-*/
 
 
-/* promise exemple */
-/*
-resultDBQuery = new Promise((resolve, reject) => {
-    //je contact ma db
-    //si mysql me répond un truc sans code erreur 
-    datas = { name : "loic", lastname : "baudoux" }
-    setTimeout(() => {
-        resolve(datas)
-    }, 500)
+
+//get swagger documentation api 
+const swaggerUi = require("swagger-ui-express")
+const yaml = require("yamljs")
+const swaggerDocument = yaml.load("./swagger.yml")
+//init swagger + init config
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
-    //je simule que la db m'a renvoyé un null, et donc une erreur de db
-    // datas = null
-    // setTimeout(() => {
-    //     reject({ error : 500})
-    // }, 2500)
-})*/
-/*
-resultDBQuery
-.then((datas) => {
-    console.log("Resolve !!!!")
-    console.log(datas)
-})
-.catch((error) => {
-    console.log("Reject !!!!")
-    console.log(error)
-})
-console.log("ici je n'ai pas encore les données de ma db de promesse")
-*/
+//routage pour la page 404
+app.all("*", (req, res) => { res.status(404).json({message : "404 : url incorrecte"})})
 
 
 app.listen(port, console.log("server démarré"))
